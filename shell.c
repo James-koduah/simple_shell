@@ -53,7 +53,7 @@ int main(__attribute__((unused))int ac, char **av)
 			}
 			else if (pid == 0) /* child process */
 			{
-				if (execve(full_path, token_args, NULL) < 0) /* execute commands */
+				if (execve(full_path, token_args, environ) < 0) /* execute commands */
 				{
 					perror(av[0]);
 					exit(1);
