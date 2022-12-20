@@ -32,17 +32,8 @@ int main(__attribute__((unused))int ac, char **av)
 			token = strtok(NULL, TOKEN_DELIMITERS);
 		}
 		token_args[i] = NULL;
-		if (strcmp(token_args[0], "exit") == 0) /* exit */
-		{
-			free(line);
-			free(line_copy);
-			exit(EXIT_SUCCESS);
-		}
-		if (strcmp(token_args[0], "env") == 0) /* print env vars */
-		{
-			print_env();
-		}
-		full_path = search_path(token_args[0]);
+			full_path = search_path(token_args[0]);
+		exit_env(token_args[0], line, line_copy);
 		if (full_path != NULL)
 		{
 			pid = fork(); /* create fork */
