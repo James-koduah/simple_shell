@@ -23,7 +23,6 @@ int main(__attribute__((unused))int ac, char **av, char **env)
 	char *token = NULL, *token_args[BUFFER_SIZE];
 	pid_t pid;
 	int i = 0;
-	char *ee;
 
 	while (1)
 	{
