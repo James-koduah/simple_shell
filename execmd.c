@@ -13,7 +13,7 @@ char *search_path(const char *command)
 	char *path, *dir, *tmp;
 	char full_path[BUFFER_SIZE];
 
-	if (command[0] == '/')
+	if (command[0] == '/' || command[0] == '.')
 	{
 		if (access(command, X_OK) == 0) /* exec abs path if exists */
 			return (strdup(command));
