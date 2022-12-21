@@ -22,16 +22,15 @@ int main(__attribute__((unused))int ac, char **av)
 	char *full_path;
 	char *token = NULL, *token_args[BUFFER_SIZE];
 	pid_t pid;
-	int i;
+	int i = 0;
 
 	while (1)
 	{
-		printf("$ "); /* prompt */
+		printf("($) "); /* prompt */
 		_getline(&line);
 		line_copy = strdup(line); /* duplicate input str*/
 		if (line_copy == NULL)
 			print_error("strdup", 1);
-		i = 0;
 		token = strtok(line_copy, TOKEN_DELIMITERS);
 		while (token != NULL)
 		{
@@ -64,5 +63,4 @@ int main(__attribute__((unused))int ac, char **av)
 	}
 	free(line);
 	return (0);
-
 }
