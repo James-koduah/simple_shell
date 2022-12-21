@@ -16,7 +16,7 @@ void print_error(char *str, int exit_num)
  * @av: argument vector
  * Return: Always 0.
  */
-int main(__attribute__((unused))int ac, char **av)
+int main(__attribute__((unused))int ac, char **av, char **env)
 {
 	char *line = malloc(sizeof(char) * BUFFER_SIZE), *line_copy;
 	char *full_path;
@@ -53,7 +53,7 @@ int main(__attribute__((unused))int ac, char **av)
 			}
 			else if (pid == 0) /* child process */
 			{
-				if (execve(full_path, token_args, environ) < 0) /* execute commands */
+				if (execve(full_path, token_args, env) < 0) /* execute commands */
 				{
 					perror(av[0]);
 					exit(1);
