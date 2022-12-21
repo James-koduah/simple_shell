@@ -1,10 +1,5 @@
 #include "main.h"
-/**
- * print_error - Used to avoid repeating of code
- * @str: Error to be printed
- * @exit_num: the number used to exit the shell
- * Return: void
- */
+
 void print_error(char *str, int exit_num)
 {
 	perror(str);
