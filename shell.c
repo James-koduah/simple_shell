@@ -53,7 +53,7 @@ int main(__attribute__((unused))int ac, char **av, char **env)
 			}
 			i--;
 		}
-		return (0);
+		exit(0);
 	}
 i = 0;
 	while (1)
