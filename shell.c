@@ -23,7 +23,17 @@ int main(__attribute__((unused))int ac, char **av, char **env)
 	char *token = NULL, *token_args[BUFFER_SIZE];
 	pid_t pid;
 	int i = 0;
+	
+	if (!(isatty(fileno(stdin))))
+	{
+		_getline(&line);
 
+		token = strtok(line, "\n");
+		token_args[0] = token;
+		token_args[1] = NULL;
+		execve(token_args[0], token_args, environ);	
+		return (0);
+	}
 	while (1)
 	{
 		putchar('$');/* prompt */
