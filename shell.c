@@ -22,18 +22,40 @@ int main(__attribute__((unused))int ac, char **av, char **env)
 	char *full_path;
 	char *token = NULL, *token_args[BUFFER_SIZE];
 	pid_t pid;
+	char *bb[BUFFER_SIZE];
 	int i = 0;
+	ssize_t ll;
+	size_t n;
 	
 	if (!(isatty(fileno(stdin))))
 	{
-		_getline(&line);
-
-		token = strtok(line, "\n");
-		token_args[0] = token;
-		token_args[1] = NULL;
-		execve(token_args[0], token_args, environ);	
+		ll = getline(&line, &n,stdin);
+	       while (ll >= 0)
+	       {
+		       bb[i] = line;
+		       i++;
+		       ll = getline(&line, &n, stdin);
+	       }	       
+	i--;	
+		while(i >= 0)
+		{	
+			token = strtok(bb[i], " \n");
+			token_args[0] = token;
+			token_args[1] = NULL;
+			pid = fork();
+			if (pid == 0)
+			{
+			execve(token_args[0], token_args, environ);
+			}
+			else
+			{
+				wait(NULL);
+			}
+			i--;
+		}
 		return (0);
 	}
+i = 0;
 	while (1)
 	{
 		putchar('$');/* prompt */
