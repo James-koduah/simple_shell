@@ -1,7 +1,11 @@
 #include "main.h"
 
-
+void interactive(void);
 void non_interactive(void);
+/**
+ * main - simeple shell
+ * Return: void
+ */
 int main(void)
 {
 	int i;
@@ -12,8 +16,18 @@ int main(void)
 
 	return (0);
 }
+/**
+ * interactive - kskks
+ * Return: ksksk
+ */
+void interactive(void)
+{
 
-
+}
+/**
+ * non_interactive - for non_ interactive exe
+ * Return: nothing
+ */
 void non_interactive(void)
 {
 	ssize_t char_read = 1;
@@ -22,7 +36,7 @@ void non_interactive(void)
 	pid_t pid;
 	char *buf[100], *token_args[100];
 	int i = 0;
-	
+
 
 	char_read = getline(&line, &n, stdin);
 	while (char_read >= 0)
@@ -48,4 +62,4 @@ void non_interactive(void)
 	}
 
 
-}	
+}
