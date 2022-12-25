@@ -1,7 +1,7 @@
 #include "main.h"
 
 
-int non_interactive(void);
+void non_interactive(void);
 int main(void)
 {
 	int i;
@@ -14,7 +14,7 @@ int main(void)
 }
 
 
-int non_interactive(void)
+void non_interactive(void)
 {
 	ssize_t char_read = 1;
 	size_t n;
@@ -46,6 +46,6 @@ int non_interactive(void)
 			wait(NULL);
 		i--;
 	}
-	return (0);
+
 
 }	
