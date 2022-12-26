@@ -13,6 +13,8 @@ int main(void)
 	i = isatty(fileno(stdin));
 	if (i == 0)
 		non_interactive();
+	else
+		interactive();
 
 	return (0);
 }
@@ -22,6 +24,41 @@ int main(void)
  */
 void interactive(void)
 {
+	size_t n = 20;
+
+	char *line_ptr;
+	char *token;
+	char *token_buf[100];
+	int i = 0;
+	pid_t pid;
+	
+
+	while (1)
+	{
+	i = 0;	
+		printf("$ ");
+		getline(&line_ptr, &n, stdin);
+
+		token = strtok(line_ptr, " \n");
+		if (token != NULL)
+		{
+			token_buf[i] = token;
+			i++;
+			token = strtok(NULL, " \n");
+		}
+		token_buf[i] = NULL;
+
+
+		pid = fork();
+		if (pid == 0)
+		{
+			execve(token_buf[0], token_buf, environ);
+		}
+		else
+			wait(NULL);
+
+	}
+
 
 }
 /**
