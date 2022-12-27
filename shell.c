@@ -1,6 +1,6 @@
 #include "main.h"
 
-void interactive(void);
+void interactive(ssize_t b);
 void non_interactive(void);
 /**
  * main - simeple shell
@@ -8,13 +8,14 @@ void non_interactive(void);
  */
 int main(void)
 {
-	int i;
+	int i = 1;
+	ssize_t b;
 
 	i = isatty(fileno(stdin));
 	if (i == 0)
 		non_interactive();
 	else
-		interactive();
+		interactive(b);
 
 	return (0);
 }
@@ -22,11 +23,11 @@ int main(void)
  * interactive - kskks
  * Return: ksksk
  */
-void interactive(void)
+void interactive(ssize_t b)
 {
 	size_t n = 20;
-
-	char *line_ptr;
+	size_t hh;
+	char *line_ptr = malloc(sizeof(char *) * 3);
 	char *token;
 	char *token_buf[100];
 	int i = 0;
@@ -35,10 +36,15 @@ void interactive(void)
 
 	while (1)
 	{
-	i = 0;	
+		i = 0;	
 		printf("$ ");
-		getline(&line_ptr, &n, stdin);
-
+		b = getline(&line_ptr, &n, stdin);
+		if (b == -1)
+		{
+			free(line_ptr);
+			putchar('\n');
+			exit(3);
+		}
 		token = strtok(line_ptr, " \n");
 		if (token != NULL)
 		{
