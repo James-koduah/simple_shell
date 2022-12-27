@@ -9,7 +9,7 @@ void non_interactive(void);
 int main(void)
 {
 	int i = 1;
-	ssize_t b;
+	ssize_t b = 9;
 
 	i = isatty(fileno(stdin));
 	if (i == 0)
@@ -26,7 +26,7 @@ int main(void)
 void interactive(ssize_t b)
 {
 	size_t n = 20;
-	size_t hh;
+
 	char *line_ptr = malloc(sizeof(char *) * 3);
 	char *token;
 	char *token_buf[100];
