@@ -57,6 +57,11 @@ void interactive(ssize_t b)
 
 
 		pid = fork();
+		if (pid == -1)
+		{
+			free(line_ptr);
+			exit(99);
+		}
 		if (pid == 0)
 		{
 			execve(token_buf[0], token_buf, environ);
