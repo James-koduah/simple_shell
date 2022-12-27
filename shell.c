@@ -37,7 +37,8 @@ void interactive(ssize_t b)
 	while (1)
 	{
 		i = 0;	
-		printf("$ ");
+		putchar('$');
+		putchar(' ');
 		b = getline(&line_ptr, &n, stdin);
 		if (b == -1)
 		{
