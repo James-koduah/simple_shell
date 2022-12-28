@@ -111,9 +111,19 @@ void non_interactive(void)
 	while (i >= 0)
 	{
 		token = strtok(buf[i], " \n");
+		if (token == NULL)
+		{
+			free(line);
+			exit(99);
+		}
 		token_args[0] = token;
 		token_args[1] = NULL;
 		pid = fork();
+		if (pid == -1)
+		{
+			free(line);
+			exit(99);
+		}
 		if (pid == 0)
 			execve(token_args[0], token_args, environ);
 		else
