@@ -64,7 +64,10 @@ void interactive(ssize_t b)
 		}
 		if (pid == 0)
 		{
-			execve(token_buf[0], token_buf, environ);
+			if (execve(token_buf[0], token_buf, environ) == -1)
+			{
+				perror("./hsh");
+			}
 		}
 		else
 			wait(NULL);
