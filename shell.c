@@ -93,6 +93,12 @@ void non_interactive(void)
 
 
 	char_read = getline(&line, &n, stdin);
+	if (char_read == -1)
+	{
+		free(line);
+		putchar('\n');
+		exit(55);
+	}
 	while (char_read >= 0)
 	{
 		buf[i] = line;
