@@ -67,6 +67,8 @@ void interactive(ssize_t b)
 			if (execve(token_buf[0], token_buf, environ) == -1)
 			{
 				perror("./hsh");
+				free(line_ptr);
+				exit(99);
 			}
 		}
 		else
