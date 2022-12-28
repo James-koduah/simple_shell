@@ -21,6 +21,7 @@ int main(void)
 }
 /**
  * interactive - kskks
+ * @b: kskksksksk
  * Return: ksksk
  */
 void interactive(ssize_t b)
@@ -32,11 +33,10 @@ void interactive(ssize_t b)
 	char *token_buf[100];
 	int i = 0;
 	pid_t pid;
-	
 
 	while (1)
 	{
-		i = 0;	
+		i = 0;
 		putchar('$');
 		putchar(' ');
 		b = getline(&line_ptr, &n, stdin);
