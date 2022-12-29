@@ -54,8 +54,7 @@ void interactive(ssize_t b)
 			token = strtok(NULL, " \n");
 		}
 		token_buf[i] = NULL;
-
-
+		
 		pid = fork();
 		if (pid == -1)
 		{
@@ -75,6 +74,7 @@ void interactive(ssize_t b)
 			wait(NULL);
 
 	}
+free(line_ptr);
 
 
 }
@@ -93,6 +93,11 @@ void non_interactive(void)
 
 
 	char_read = getline(&line, &n, stdin);
+	if (char_read == -1)
+	{
+		perror("./hsh");
+		free(line);
+	}
 	while (char_read >= 0)
 	{
 		buf[i] = line;
@@ -114,6 +119,6 @@ void non_interactive(void)
 			wait(NULL);
 		i--;
 	}
-
+free(line);
 
 }
