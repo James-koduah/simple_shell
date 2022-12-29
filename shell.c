@@ -39,6 +39,8 @@ void interactive(ssize_t b)
 	n = 20;
 	line_ptr = NULL;
 	i = 0;
+	token = NULL;
+	pid = 1;
 	while (1)
 	{
 		i = 0;	
@@ -93,14 +95,15 @@ void interactive(ssize_t b)
  */
 void non_interactive(void)
 {
-	ssize_t char_read = 1;
+	ssize_t char_read;
 	size_t n;
 	char *line, *token;
 	pid_t pid;
 	char *buf[100], *token_args[100];
-	int i = 0;
+	int i;
 
-
+	i = 0;
+	char_read = 1;
 	char_read = getline(&line, &n, stdin);
 	while (char_read >= 0)
 	{
