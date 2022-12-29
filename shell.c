@@ -73,8 +73,9 @@ void interactive(ssize_t b)
 		else
 			wait(NULL);
 
+
+
 	}
-free(line_ptr);
 
 
 }
