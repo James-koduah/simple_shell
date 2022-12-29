@@ -1,106 +1,119 @@
 #include "main.h"
+
+void interactive(ssize_t b);
+void non_interactive(void);
 /**
- * print_error - Used to avoid repeating of code
- * @str: Error to be printed
- * @exit_num: the number used to exit the shell
+ * main - simeple shell
  * Return: void
  */
-void print_error(char *str, int exit_num)
+int main(void)
 {
-	perror(str);
-	exit(exit_num);
+	int i = 1;
+	ssize_t b = 9;
+
+	i = isatty(fileno(stdin));
+	if (i == 0)
+		non_interactive();
+	else
+		interactive(b);
+
+	return (0);
 }
 /**
- * main - execute a simple shell
- * @ac: argument count
- * @av: argument vector
- * Return: Always 0.
+ * interactive - kskks
+ * Return: ksksk
  */
-int main(__attribute__((unused))int ac, char **av, char **env)
+void interactive(ssize_t b)
 {
-	char *line = malloc(sizeof(char) * BUFFER_SIZE), *line_copy;
-	char *full_path;
-	char *token = NULL, *token_args[BUFFER_SIZE];
-	pid_t pid;
-	char *bb[BUFFER_SIZE];
+	size_t n = 20;
+
+	char *line_ptr = malloc(sizeof(char *) * 3);
+	char *token;
+	char *token_buf[100];
 	int i = 0;
-	ssize_t ll;
-	size_t n;
+	pid_t pid;
 	
-	if (!(isatty(fileno(stdin))))
-	{
-		ll = getline(&line, &n,stdin);
-	       while (ll >= 0)
-	       {
-		       bb[i] = line;
-		       i++;
-		       ll = getline(&line, &n, stdin);
-	       }	       
-	i--;	
-		while(i >= 0)
-		{	
-			token = strtok(bb[i], " \n");
-			token_args[0] = token;
-			token_args[1] = NULL;
-			pid = fork();
-			if (pid == 0)
-			{
-			execve(token_args[0], token_args, environ);
-			}
-			else
-			{
-				wait(NULL);
-			}
-			i--;
-		}
-		exit(0);
-	}
-i = 0;
+
 	while (1)
 	{
-		putchar('$');/* prompt */
+		i = 0;	
+		putchar('$');
 		putchar(' ');
-		_getline(&line);
-		line_copy = strdup(line); /* duplicate input str*/
-		if (line_copy == NULL)
-			print_error("strdup", 1);
-		i = 0;
-		token = strtok(line_copy, TOKEN_DELIMITERS);
-		while (token != NULL)
+		b = getline(&line_ptr, &n, stdin);
+		if (b == -1)
 		{
-			token_args[i] = token;
-			i++;
-			token = strtok(NULL, TOKEN_DELIMITERS);
+			free(line_ptr);
+			putchar('\n');
+			exit(3);
 		}
-		token_args[i] = NULL;
-			full_path = search_path(token_args[0]);
-		exit_env(token_args[0], line, line_copy);
-		if (full_path != NULL)
+		token = strtok(line_ptr, " \n");
+		if (token != NULL)
 		{
-			pid = fork(); /* create fork */
-			if (pid < 0)
+			token_buf[i] = token;
+			i++;
+			token = strtok(NULL, " \n");
+		}
+		token_buf[i] = NULL;
+
+
+		pid = fork();
+		if (pid == -1)
+		{
+			free(line_ptr);
+			exit(99);
+		}
+		if (pid == 0)
+		{
+			if (execve(token_buf[0], token_buf, environ) == -1)
 			{
-				perror("fork");
-				exit(1);
-			}
-			else if (pid == 0) /* child process */
-			{
-				if (execve(full_path, token_args, env) < 0) /* execute commands */
-				{
-					perror(av[0]);
-					exit(1);
-				}
-				free(full_path);
-			}
-			else
-			{
-				wait(NULL); /* parent process */
-				free(line_copy);
+				perror("./hsh");
+				free(line_ptr);
+				exit(99);
 			}
 		}
 		else
-			perror("execve");
+			wait(NULL);
+
 	}
-	free(line);
-	return (0);
+
+
+}
+/**
+ * non_interactive - for non_ interactive exe
+ * Return: nothing
+ */
+void non_interactive(void)
+{
+	ssize_t char_read = 1;
+	size_t n;
+	char *line, *token;
+	pid_t pid;
+	char *buf[100], *token_args[100];
+	int i = 0;
+
+
+	char_read = getline(&line, &n, stdin);
+	while (char_read >= 0)
+	{
+		buf[i] = line;
+		i++;
+		char_read = getline(&line, &n, stdin);
+	}
+
+
+	i--;
+	while (i >= 0)
+	{
+		token = strtok(buf[i], " \n");
+		token_args[0] = token;
+		token_args[1] = NULL;
+		pid = fork();
+		if (pid == 0)
+			execve(token_args[0], token_args, environ);
+		else
+			wait(NULL);
+		i--;
+	}
+
+
 }

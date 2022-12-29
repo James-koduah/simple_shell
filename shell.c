@@ -27,7 +27,7 @@ void interactive(ssize_t b)
 {
 	size_t n = 20;
 
-	char *line_ptr = malloc(sizeof(char *) * 3);
+	char *line_ptr = NULL;
 	char *token;
 	char *token_buf[100];
 	int i = 0;
@@ -54,11 +54,13 @@ void interactive(ssize_t b)
 			token = strtok(NULL, " \n");
 		}
 		token_buf[i] = NULL;
-		
+
+
 		pid = fork();
 		if (pid == -1)
 		{
 			free(line_ptr);
+
 			exit(99);
 		}
 		if (pid == 0)
@@ -66,14 +68,15 @@ void interactive(ssize_t b)
 			if (execve(token_buf[0], token_buf, environ) == -1)
 			{
 				perror("./hsh");
+
 				free(line_ptr);
 				exit(99);
 			}
 		}
 		else
+		{
 			wait(NULL);
-
-
+		}
 
 	}
 
@@ -94,11 +97,6 @@ void non_interactive(void)
 
 
 	char_read = getline(&line, &n, stdin);
-	if (char_read == -1)
-	{
-		perror("./hsh");
-		free(line);
-	}
 	while (char_read >= 0)
 	{
 		buf[i] = line;
@@ -120,6 +118,7 @@ void non_interactive(void)
 			wait(NULL);
 		i--;
 	}
-free(line);
+	free(line);
+
 
 }
