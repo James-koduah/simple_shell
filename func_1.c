@@ -20,3 +20,44 @@ int only_spaces(char *token)
 	}
 	return (yes);
 }
+
+/**
+ * search_path - search for the command
+ * @str: the command
+ * Return: modified command or NULL if the command doesn't exist
+ */
+char *search_path(const char *str)
+{
+	char *path, *token, *tmp;
+	char fullpath[1024];
+
+	if (str[0] == '/' || str[0] == '.')
+	{
+		if (access(str, X_OK) == 0)
+			return (strdup(str));
+		else
+			return (NULL);
+	}
+
+	path = getenv("PATH");
+	if (path == NULL)
+		return (NULL);
+	tmp = strdup(path);
+	if (tmp == NULL)
+		return (NULL);
+	token = strtok(tmp, ":");
+	while (token != NULL)
+	{
+		strcpy(fullpath, token);
+		strcat(fullpath, "/");
+		strcat(fullpath, str);
+		if (access(fullpath, X_OK) == 0)
+		{
+			free(tmp);
+			return (strdup(fullpath));
+		}
+		token = strtok(NULL, ":");
+	}
+	free(tmp);
+	return (NULL);
+}

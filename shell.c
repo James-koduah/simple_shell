@@ -54,7 +54,7 @@ void interactive(ssize_t b)
 		if (b == -1)
 		{
 			free(line_ptr);
-			putchar('\n');
+			printf("\nexiting\n");
 			exit(3);
 		}
 
@@ -76,25 +76,32 @@ void interactive(ssize_t b)
 			token = strtok(NULL, " \n");
 		}
 		token_buf[i] = NULL;
-
-		/* Child process */
-		pid = fork();
-		if (pid == -1)
+		
+		token = search_path(token_buf[0]);
+		if (token != NULL)
 		{
-			free(line_ptr);
-			exit(99);
-		}
-		if (pid == 0)
-		{
-			if (execve(token_buf[0], token_buf, environ) == -1)
+			/* Child process */
+			pid = fork();
+			if (pid == -1)
 			{
-				perror("./hsh");
+				free(token);
 				free(line_ptr);
 				exit(99);
 			}
+			if (pid == 0)
+			{
+				if (execve(token, token_buf, environ) == -1)
+				{
+					perror("./hsh");
+					free(line_ptr);
+					free(token);
+					exit(99);
+				}
+			}
+			else
+				wait(NULL);
 		}
-		else
-			wait(NULL);
+
 	}
 }
 

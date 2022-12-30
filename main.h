@@ -15,7 +15,6 @@ extern char **environ;
 
 /* func_1.c file */
 int only_spaces(char *token);
-
-
+char *search_path(const char *str);
 
 #endif
