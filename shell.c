@@ -76,7 +76,7 @@ void interactive(ssize_t b)
 			token = strtok(NULL, " \n");
 		}
 		token_buf[i] = NULL;
-		
+
 		/* Child process */
 		pid = fork();
 		if (pid == -1)
