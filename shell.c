@@ -23,6 +23,7 @@ int main(void)
 }
 /**
  * interactive - kskks
+ * @b: ksksk
  * Return: ksksk
  */
 void interactive(ssize_t b)
@@ -34,16 +35,16 @@ void interactive(ssize_t b)
 	char *token_buf[100];
 	int i;
 	pid_t pid;
-	
 
 	n = 20;
 	line_ptr = NULL;
 	i = 0;
 	token = NULL;
 	pid = 1;
+
 	while (1)
 	{
-		i = 0;	
+		i = 0;
 		putchar('$');
 		putchar(' ');
 		b = getline(&line_ptr, &n, stdin);
@@ -100,9 +101,10 @@ void non_interactive(void)
 	char *line, *token;
 	pid_t pid;
 	char *buf[100], *token_args[100];
-	int i;
+	int i, j;
 
 	i = 0;
+	j = 0;
 	line = NULL;
 	n = 10;
 	char_read = 1;
@@ -119,8 +121,13 @@ void non_interactive(void)
 	while (i >= 0)
 	{
 		token = strtok(buf[i], " \n");
-		token_args[0] = token;
-		token_args[1] = NULL;
+		while (token != NULL)
+		{
+			token_args[j] = token;
+			j++;
+			token = strtok(NULL, " \n");
+		}
+		token_args[j] = NULL;
 		pid = fork();
 		if (pid == 0)
 			execve(token_args[0], token_args, environ);
