@@ -103,6 +103,8 @@ void non_interactive(void)
 	int i;
 
 	i = 0;
+	line = NULL;
+	n = 10;
 	char_read = 1;
 	char_read = getline(&line, &n, stdin);
 	while (char_read >= 0)
