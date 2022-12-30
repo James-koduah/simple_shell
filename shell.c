@@ -33,12 +33,13 @@ void interactive(ssize_t b)
 	char *line_ptr;
 	char *token;
 	char *token_buf[100];
-	int i;
+	int i, exe;
 	pid_t pid;
 
 	n = 20;
 	line_ptr = NULL;
 	i = 0;
+	exe = 0;
 	token = NULL;
 	pid = 1;
 
@@ -55,6 +56,8 @@ void interactive(ssize_t b)
 			exit(3);
 		}
 		token = strtok(line_ptr, " \n");
+		if (token == NULL)
+			exe = 1;
 		if (token != NULL)
 		{
 			token_buf[i] = token;
@@ -71,7 +74,7 @@ void interactive(ssize_t b)
 
 			exit(99);
 		}
-		if (pid == 0)
+		if (pid == 0 && exe == 0)
 		{
 			if (execve(token_buf[0], token_buf, environ) == -1)
 			{
