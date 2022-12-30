@@ -8,9 +8,11 @@ void non_interactive(void);
  */
 int main(void)
 {
-	int i = 1;
-	ssize_t b = 9;
+	int i;
+	ssize_t b;
 
+	i = 1;
+	b = 9;
 	i = isatty(fileno(stdin));
 	if (i == 0)
 		non_interactive();
@@ -25,15 +27,20 @@ int main(void)
  */
 void interactive(ssize_t b)
 {
-	size_t n = 20;
+	size_t n;
 
-	char *line_ptr = malloc(sizeof(char *) * 3);
+	char *line_ptr;
 	char *token;
 	char *token_buf[100];
-	int i = 0;
+	int i;
 	pid_t pid;
 	
 
+	n = 20;
+	line_ptr = NULL;
+	i = 0;
+	token = NULL;
+	pid = 1;
 	while (1)
 	{
 		i = 0;	
@@ -60,6 +67,7 @@ void interactive(ssize_t b)
 		if (pid == -1)
 		{
 			free(line_ptr);
+
 			exit(99);
 		}
 		if (pid == 0)
@@ -67,12 +75,15 @@ void interactive(ssize_t b)
 			if (execve(token_buf[0], token_buf, environ) == -1)
 			{
 				perror("./hsh");
+
 				free(line_ptr);
 				exit(99);
 			}
 		}
 		else
+		{
 			wait(NULL);
+		}
 
 	}
 
@@ -84,14 +95,17 @@ void interactive(ssize_t b)
  */
 void non_interactive(void)
 {
-	ssize_t char_read = 1;
+	ssize_t char_read;
 	size_t n;
 	char *line, *token;
 	pid_t pid;
 	char *buf[100], *token_args[100];
-	int i = 0;
+	int i;
 
-
+	i = 0;
+	line = NULL;
+	n = 10;
+	char_read = 1;
 	char_read = getline(&line, &n, stdin);
 	while (char_read >= 0)
 	{
@@ -114,6 +128,7 @@ void non_interactive(void)
 			wait(NULL);
 		i--;
 	}
+	free(line);
 
 
 }

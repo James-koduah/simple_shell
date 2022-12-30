@@ -38,9 +38,6 @@ void interactive(ssize_t b)
 
 	n = 20;
 	line_ptr = NULL;
-	i = 0;
-	token = NULL;
-	pid = 1;
 	while (1)
 	{
 		i = 0;	
