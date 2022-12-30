@@ -13,7 +13,8 @@
 
 extern char **environ;
 
-
+/* func_1.c file */
+int only_spaces(char *token);
 
 
 

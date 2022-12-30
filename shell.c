@@ -8,37 +8,40 @@ void non_interactive(void);
  */
 int main(void)
 {
-	int i;
+	int connected_terminal;
 	ssize_t b;
 
-	i = 1;
+/* Initialzed these values so valgrind would be happy */
+	connected_terminal = 1;
 	b = 9;
-	i = isatty(fileno(stdin));
-	if (i == 0)
+
+/* Check if the program is connected to a terminal or not */
+	connected_terminal = isatty(fileno(stdin));
+	if (connected_terminal == 0)
 		non_interactive();
 	else
 		interactive(b);
 
 	return (0);
 }
+
 /**
- * interactive - kskks
- * @b: ksksk
- * Return: ksksk
+ * interactive - If the program is connected to a terminal
+ * @b: Not important
+ * Return: Nothing
  */
 void interactive(ssize_t b)
 {
 	size_t n;
-
 	char *line_ptr;
 	char *token;
 	char *token_buf[100];
-	int i;
+	int i, o_sps;
 	pid_t pid;
 
+/* Initialzed these values so valgrind would be happy */
 	n = 20;
 	line_ptr = NULL;
-	i = 0;
 	token = NULL;
 	pid = 1;
 
@@ -54,27 +57,31 @@ void interactive(ssize_t b)
 			putchar('\n');
 			exit(3);
 		}
-		token = strtok(line_ptr, " \n");
-		if (token == NULL)
+
+		/* Check if only spaces was inputed */
+		o_sps = only_spaces(line_ptr);
+		if (o_sps == 0)
 		{
 			free(line_ptr);
 			perror("./hsh");
 			exit(44);
 		}
-		if (token != NULL)
+
+		/* Split the string into tokens */
+		token = strtok(line_ptr, " \n");
+		while (token != NULL)
 		{
 			token_buf[i] = token;
 			i++;
 			token = strtok(NULL, " \n");
 		}
 		token_buf[i] = NULL;
-
-
+		
+		/* Child process */
 		pid = fork();
 		if (pid == -1)
 		{
 			free(line_ptr);
-
 			exit(99);
 		}
 		if (pid == 0)
@@ -82,20 +89,15 @@ void interactive(ssize_t b)
 			if (execve(token_buf[0], token_buf, environ) == -1)
 			{
 				perror("./hsh");
-
 				free(line_ptr);
 				exit(99);
 			}
 		}
 		else
-		{
 			wait(NULL);
-		}
-
 	}
-
-
 }
+
 /**
  * non_interactive - for non_ interactive exe
  * Return: nothing
@@ -109,12 +111,16 @@ void non_interactive(void)
 	char *buf[100], *token_args[100];
 	int i, j, exe;
 
+/* Initialzed these values so valgrind would be happy */
 	i = 0;
 	exe = 0;
 	line = NULL;
 	n = 10;
 	char_read = 1;
+
 	char_read = getline(&line, &n, stdin);
+
+	/* If there would be more than one line printed to the terminal */
 	while (char_read >= 0)
 	{
 		buf[i] = line;
@@ -122,7 +128,7 @@ void non_interactive(void)
 		char_read = getline(&line, &n, stdin);
 	}
 
-
+	/* We will loop through each line printed to the terminal and execute them */
 	i--;
 	while (i >= 0)
 	{
@@ -150,6 +156,4 @@ void non_interactive(void)
 		i--;
 	}
 	free(line);
-
-
 }
