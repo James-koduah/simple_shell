@@ -139,10 +139,12 @@ void non_interactive(void)
 		token_args[j] = NULL;
 		pid = fork();
 		if (pid == 0)
+		{
 			if (exe == 0)
 			{
 				execve(token_args[0], token_args, environ);
 			}
+		}
 		else
 			wait(NULL);
 		i--;
