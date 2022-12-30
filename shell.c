@@ -104,7 +104,6 @@ void non_interactive(void)
 	int i, j;
 
 	i = 0;
-	j = 0;
 	line = NULL;
 	n = 10;
 	char_read = 1;
@@ -120,6 +119,7 @@ void non_interactive(void)
 	i--;
 	while (i >= 0)
 	{
+		j = 0;
 		token = strtok(buf[i], " \n");
 		while (token != NULL)
 		{
