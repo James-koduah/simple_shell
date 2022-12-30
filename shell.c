@@ -107,9 +107,10 @@ void non_interactive(void)
 	char *line, *token;
 	pid_t pid;
 	char *buf[100], *token_args[100];
-	int i, j;
+	int i, j, exe;
 
 	i = 0;
+	exe = 0;
 	line = NULL;
 	n = 10;
 	char_read = 1;
@@ -127,6 +128,8 @@ void non_interactive(void)
 	{
 		j = 0;
 		token = strtok(buf[i], " \n");
+		if (token == NULL)
+			exe = 1;
 		while (token != NULL)
 		{
 			token_args[j] = token;
@@ -136,7 +139,10 @@ void non_interactive(void)
 		token_args[j] = NULL;
 		pid = fork();
 		if (pid == 0)
-			execve(token_args[0], token_args, environ);
+			if (exe == 0)
+			{
+				execve(token_args[0], token_args, environ);
+			}
 		else
 			wait(NULL);
 		i--;
