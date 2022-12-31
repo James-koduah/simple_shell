@@ -131,11 +131,8 @@ void non_interactive(void)
 	/* If there would be more than one line printed to the terminal */
 	while (char_read >= 0)
 	{
-		if (osp > 0)
-		{
 			buf[i] = line;
 			i++;
-		}
 		char_read = getline(&line, &n, stdin);
 	}
 	
