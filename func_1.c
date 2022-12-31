@@ -53,11 +53,13 @@ char *search_path(const char *str)
 		strcat(fullpath, str);
 		if (access(fullpath, X_OK) == 0)
 		{
+
 			free(tmp);
 			return (strdup(fullpath));
 		}
 		token = strtok(NULL, ":");
 	}
+
 	free(tmp);
 	return (NULL);
 }

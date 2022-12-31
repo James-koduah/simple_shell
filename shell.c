@@ -99,7 +99,10 @@ void interactive(ssize_t b)
 				}
 			}
 			else
+			{
 				wait(NULL);
+				free(token);
+			}
 		}
 
 	}
