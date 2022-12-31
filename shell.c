@@ -117,7 +117,7 @@ void non_interactive(void)
 	pid_t pid;
 	char *buf[100], *token_args[100];
 	int i, j, exe;
-	int osp = 9;
+
 
 /* Initialzed these values so valgrind would be happy */
 	i = 0;
