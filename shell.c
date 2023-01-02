@@ -76,7 +76,7 @@ void interactive(ssize_t b)
 			token = strtok(NULL, " \n");
 		}
 		token_buf[i] = NULL;
-		
+
 		token = search_path(token_buf[0]);
 		if (token != NULL)
 		{
@@ -134,11 +134,11 @@ void non_interactive(void)
 	/* If there would be more than one line printed to the terminal */
 	while (char_read >= 0)
 	{
-			buf[i] = line;
-			i++;
+		buf[i] = line;
+		i++;
 		char_read = getline(&line, &n, stdin);
 	}
-	
+
 	/* We will loop through each line printed to the terminal and execute them */
 	i--;
 	while (i >= 0)
@@ -154,21 +154,28 @@ void non_interactive(void)
 			token = strtok(NULL, " \n");
 		}
 		token_args[j] = NULL;
+
 		token = search_path(token_args[0]);
 		if (token != NULL)
 		{
-		pid = fork();
-		if (pid == 0)
-		{
-			if (exe == 0)
+			pid = fork();
+			if (pid == 0)
 			{
-				execve(token, token_args, environ);
+				if (exe == 0)
+				{
+					if (execve(token, token_args, environ) == -1)
+					{
+						perror("./hsh");
+						free(line);
+						free(token);
+					}
+				}
 			}
+			else
+				wait(NULL);
+			}
+			i--;
 		}
-		else
-			wait(NULL);
-		}
-		i--;
-	}
 	free(line);
+	free(token);
 }
