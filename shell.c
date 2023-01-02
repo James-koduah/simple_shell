@@ -120,7 +120,7 @@ void non_interactive(void)
 	pid_t pid;
 	char *buf[100], *token_args[100];
 	int i, j, exe;
-
+	int os;
 
 /* Initialzed these values so valgrind would be happy */
 	i = 0;
@@ -134,8 +134,12 @@ void non_interactive(void)
 	/* If there would be more than one line printed to the terminal */
 	while (char_read >= 0)
 	{
+		os = only_spaces(line);
+		if (os > 0)
+		{
 		buf[i] = line;
 		i++;
+		}
 		char_read = getline(&line, &n, stdin);
 	}
 
@@ -147,6 +151,7 @@ void non_interactive(void)
 		token = strtok(buf[i], " \n");
 		if (token == NULL)
 			exe = 1;
+
 		while (token != NULL)
 		{
 			token_args[j] = token;
