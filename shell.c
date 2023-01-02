@@ -69,6 +69,11 @@ void interactive(ssize_t b)
 
 		/* Split the string into tokens */
 		token = strtok(line_ptr, " \n");
+		if (exit_env(token) == 1)
+		{
+			free(line_ptr);
+			exit(22);
+		}
 		while (token != NULL)
 		{
 			token_buf[i] = token;

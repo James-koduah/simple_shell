@@ -41,7 +41,10 @@ char *search_path(const char *str)
 
 	path = getenv("PATH");
 	if (path == NULL)
+	{
+		perror("./hsh");
 		return (NULL);
+	}
 	tmp = strdup(path);
 	if (tmp == NULL)
 		return (NULL);
@@ -62,4 +65,46 @@ char *search_path(const char *str)
 
 	free(tmp);
 	return (NULL);
+}
+
+
+/**
+ * print_env - env builtin that prints current environment
+ *
+ * Return: void
+ */
+void print_env(void)
+{
+	char **env; /* variables to store environ and name, value keys */
+	char *name, *value;
+	/* iterate through all env variables */
+	for (env = environ; *env != NULL; env++)
+	{
+		name = *env; /* get env name and value */
+		value = getenv(name);
+
+		printf("%s=%s\n", name, value);
+	}
+}
+
+
+/**
+ * exit_env - Used to reduce the number of lines in the main function
+ * @str: The command from the shell either (exit) or (env);
+ * @line: A buffer from the main function to be freed
+ * @line_copy: A buffer from the main function to be freed
+ * Return: Nohthing
+ */
+int exit_env(char *str)
+{
+	if (strcmp(str, "exit") == 0) /* exit */
+	{
+		printf("exit\n");
+		return (1);
+	}
+	if (strcmp(str, "env") == 0) /* print env vars */
+	{
+		print_env();
+	}
+	return (0);
 }
